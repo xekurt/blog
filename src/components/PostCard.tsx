@@ -21,14 +21,14 @@ const PostCard: FC<PostCardProps> = (props) => {
         <img
           src={props.image}
           className="h-full w-full object-cover"
-          alt={props.id.toString()}
+          alt={props.id?.toString()}
           loading="lazy"
         />
       </div>
       <h1 className="text-lg font-bold">{props.title}</h1>
       <p className="mt-1 text-sm text-[#9D9D9D]">{props.text}</p>
       <div className="mt-2 flex flex-wrap">
-        {props.tags.map((tag, index) => (
+        {props.tags?.map((tag, index) => (
           <Tag text={tag} key={index} />
         ))}
       </div>

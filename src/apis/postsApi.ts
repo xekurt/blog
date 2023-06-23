@@ -1,5 +1,5 @@
 import api from "./configs/axiosConfig";
-
+import { v4 as uuidv4 } from "uuid";
 export const postApi = {
   get: async function (id: Number) {},
   getAll: async function (q?: string) {
@@ -8,5 +8,23 @@ export const postApi = {
       method: "GET",
     });
     return response.data;
+  },
+  create: async function (postObject) {
+    let { description } = postObject;
+    let data = {
+      ...postObject,
+      id: uuidv4().slice(0, 5),
+      publishDate: new Date(),
+      userId: "10",
+      image: "http://placeimg.com/640/480/technics",
+      likes: 17,
+      text: description,
+    };
+    console.info(data);
+    const response = await api.request({
+      url: "/posts/",
+      method: "POST",
+      data: data,
+    });
   },
 };

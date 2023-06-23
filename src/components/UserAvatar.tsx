@@ -32,7 +32,9 @@ const UserAvatar: FC<UserAvatarProps> = ({ id, date }) => {
       />
       <div className="ml-1 flex-col justify-center">
         <p className="mt-2 text-xs">
-          {userDetails?.firstName + " " + userDetails?.lastName}
+          {userDetails?.firstName
+            ? userDetails.firstName + " " + userDetails.lastName
+            : "No data"}
         </p>
         <p className="text-xs text-[#9d9d9d]">
           {new Date(date).toString().slice(4, 15)}

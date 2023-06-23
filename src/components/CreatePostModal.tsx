@@ -3,6 +3,7 @@ import React, { FC, Fragment, useState } from "react";
 import Button from "@/src/components/Button";
 import Input from "@/src/components/Input";
 import Tag from "@/src/components/Tag";
+import { postApi } from "@/src/apis/postsApi";
 
 interface CreatePostModalProps {
   isOpen: boolean;
@@ -33,9 +34,14 @@ const CreatePostModal: FC<CreatePostModalProps> = ({
         ...prevState,
         tags: [...prevState.tags, tagInputValue],
       }));
+      setTagInputValue("");
     }
   };
-  console.info(modalInputValue);
+  const handlePublishPost = () => {
+    postApi.create(modalInputValue).then(() => {
+      handleCloseModal();
+    });
+  };
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleCloseModal}>
@@ -89,19 +95,27 @@ const CreatePostModal: FC<CreatePostModalProps> = ({
                     </span>
                     New Post
                   </h3>
-                  <Button onClick={handleCloseModal}>Publish Post</Button>
+                  <Button onClick={handlePublishPost}>Publish Post</Button>
                 </Dialog.Title>
                 <div>
                   <label title="Title" className="ml-2 text-sm font-bold">
                     Title{" "}
                   </label>
-                  <input className="block w-full rounded-md border border-[#e7e7e7]  p-2.5 text-sm hover:border-[#9d9d9d] focus:border-[#9d9d9d] focus:outline-none" />
+                  <input
+                    onChange={handleChangeModalInput}
+                    id="title"
+                    value={modalInputValue.title}
+                    className="block w-full rounded-md border border-[#e7e7e7]  p-2.5 text-sm hover:border-[#9d9d9d] focus:border-[#9d9d9d] focus:outline-none"
+                  />
                 </div>
                 <div className="mt-2">
                   <label className="ml-2 text-sm font-bold">Description</label>
                   <textarea
                     className="block w-full rounded-md border border-[#e7e7e7]  p-2.5 text-sm hover:border-[#9d9d9d] focus:border-[#9d9d9d] focus:outline-none"
                     multiple
+                    onChange={handleChangeModalInput}
+                    value={modalInputValue.description}
+                    id="description"
                     rows={5}
                   />
                 </div>
