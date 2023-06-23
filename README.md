@@ -1,3 +1,3 @@
-All you have to do is enter these commands:
-#1 step-1 : 'yarn' or 'npm install' 
-#2 step-2 : 'yarn dev' or 'npm run dev'
+All you have to do is enter these commands: <br/>
+step-1 : 'yarn' or 'npm install' <br/>
+step-2 : 'yarn dev' or 'npm run dev' <br/>
