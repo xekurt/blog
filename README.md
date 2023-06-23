@@ -1,3 +1,3 @@
 All you have to do is enter these commands:
-step-1 : 'yarn' or 'npm install' 
-step-2 : 'yarn dev' or 'npm run dev'
+#1 step-1 : 'yarn' or 'npm install' 
+#2 step-2 : 'yarn dev' or 'npm run dev'
