@@ -26,7 +26,6 @@ export const postApi = {
       likes: 17,
       text: description,
     };
-    console.info(data);
     const response = await api.request({
       url: "/posts/",
       method: "POST",

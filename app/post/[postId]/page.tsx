@@ -16,7 +16,6 @@ const PostDetails: FC<PostDetailsProps> = ({ params }) => {
       });
     }
   }, [params.postId]);
-  console.info(postDetails);
   return (
     <section className="px-56 py-24">
       {postDetails && <PostCard {...(postDetails as Post)} />}
