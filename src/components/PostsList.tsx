@@ -1,54 +1,71 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
-import { postApi } from "@/src/apis/postsApi";
+import { FC, useMemo } from "react";
+
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeGrid as List } from "react-window";
 import PostCard from "@/src/components/PostCard";
-// import { useObserver } from "@/src/hooks/useObserver";
-export default function PostsList() {
-  const [posts, setPosts] = useState([]);
-  const observerTarget = useRef(null);
-  // const { visibleCounts } = useObserver(observerTarget);
+import Loading from "@/src/components/Loading";
+import { Post } from "@/src/Types/Posts";
+import NoResult from "@/src/components/NoResult";
 
-  useEffect(() => {
-    postApi.getAll().then((posts) => setPosts(posts));
-  }, []);
+interface PostListProps {
+  resultList: Post[];
+  postsList: Post[];
+  loading: Boolean;
+}
+const PostsList: FC<PostListProps> = ({ resultList, postsList, loading }) => {
+  const posts = useMemo(() => postsList, [postsList]);
+  const result = useMemo(() => resultList, [resultList]);
   const getColumn = (width: number) => {
     if (width < 400) return 1;
     if (width < 600) return 2;
     if (width < 900) return 3;
     return 4;
   };
+  // Check if result exist return result count else return posts counts
+  const chooseData = () => {
+    if (result?.length > 0) return result.length;
+    else return posts.length;
+  };
+
   return (
     <div className="mt-8 h-full w-full">
       {/*Added virtualization to boost performance since our list is too large*/}
-      <AutoSizer>
-        {({ width, height }) => {
-          return (
-            <List
-              columnCount={getColumn(width)}
-              rowCount={posts.length / getColumn(width)}
-              columnWidth={width / getColumn(width) - 6}
-              rowHeight={530}
-              width={width}
-              height={height}
-            >
-              {({ columnIndex, rowIndex, style }) => {
-                const currentIndex = rowIndex * 4 + columnIndex;
-                return (
-                  <div style={style} key={currentIndex}>
-                    <PostCard {...(posts[currentIndex] as object)} />
-                  </div>
-                );
-              }}
-            </List>
-          );
-        }}
-      </AutoSizer>
-      {/*{posts.slice(0, visibleCounts).map((post: any, index) => (*/}
-      {/*  <PostCard {...post} key={index} />*/}
-      {/*))}*/}
-      {/*<div ref={observerTarget}></div>*/}
+      {loading ? (
+        <Loading />
+      ) : !result ? (
+        <NoResult />
+      ) : (
+        <AutoSizer>
+          {({ width, height }) => {
+            return (
+              <List
+                columnCount={getColumn(width)}
+                rowCount={chooseData() / getColumn(width)}
+                columnWidth={width / getColumn(width) - 6}
+                rowHeight={530}
+                width={width}
+                height={height}
+              >
+                {({ columnIndex, rowIndex, style }) => {
+                  const currentIndex =
+                    rowIndex * getColumn(width) + columnIndex;
+                  let output: Post =
+                    result?.length > 0
+                      ? result[currentIndex]
+                      : posts[currentIndex];
+                  return (
+                    <div style={style} key={currentIndex}>
+                      <PostCard {...output} />
+                    </div>
+                  );
+                }}
+              </List>
+            );
+          }}
+        </AutoSizer>
+      )}
     </div>
   );
-}
+};
+export default PostsList;

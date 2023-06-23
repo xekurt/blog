@@ -1,5 +1,4 @@
 const Favs = ({ count }: { count: number }) => {
-  console.info(count);
   return (
     <div className="flex w-1/4 items-center justify-center">
       <span className="mr-1 text-xs text-[#9d9d9d]"> {count} </span>

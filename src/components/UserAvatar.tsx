@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { userApi } from "@/src/apis/usersApi";
 
 interface UserAvatarProps {
@@ -14,12 +14,13 @@ type UserType = {
   date: string;
 };
 const UserAvatar: FC<UserAvatarProps> = ({ id, date }) => {
+  const userId = useMemo(() => id, [id]);
   const [userDetails, setUserDetails] = useState<UserType>();
   useEffect(() => {
-    userApi.get(id).then((user: UserType) => {
+    userApi.get(userId).then((user: UserType) => {
       setUserDetails(user);
     });
-  }, [id]);
+  }, [userId]);
   return (
     <div className="justify-left flex h-full w-2/3 p-2">
       <img

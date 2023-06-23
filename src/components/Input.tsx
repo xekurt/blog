@@ -1,18 +1,23 @@
 "use client";
 import React from "react";
+import { className } from "postcss-selector-parser";
 
-interface SearchInputProps {
+interface InputProps {
   value: string;
   handleChangeValue: (e: React.FormEvent<HTMLInputElement>) => void;
-  hasIcon: boolean;
+  hasIcon?: boolean;
+  id?: string;
+  className?: string;
 }
-export default function SearchInput({
+export default function Input({
   value,
   handleChangeValue,
   hasIcon,
-}: SearchInputProps) {
+  id,
+  className,
+}: InputProps) {
   return (
-    <div className="relative h-10 w-80">
+    <div className={className}>
       {hasIcon && (
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <svg
@@ -32,7 +37,7 @@ export default function SearchInput({
       )}
       <input
         type="text"
-        id="simple-search"
+        id={id}
         className="block w-full rounded-3xl border border-[#e7e7e7]  p-2.5 pl-10 text-sm hover:border-[#9d9d9d] focus:border-[#9d9d9d] focus:outline-none"
         placeholder="Search"
         value={value}
